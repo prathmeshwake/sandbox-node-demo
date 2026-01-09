@@ -13,6 +13,13 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Install OpenShift CLI
+      run: |
+        curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
+        tar -xzf oc.tar.gz
+        sudo mv oc /usr/local/bin/
+        oc version
+
     - name: Login to OpenShift
       run: |
         echo "${{ secrets.OPENSHIFT_TOKEN }}" | oc login https://api.sandbox.openshift.com --token=-
