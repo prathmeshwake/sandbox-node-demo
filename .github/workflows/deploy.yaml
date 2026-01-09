@@ -1,0 +1,23 @@
+name: Deploy to OpenShift Sandbox
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Login to OpenShift
+      run: |
+        echo "${{ secrets.OPENSHIFT_TOKEN }}" | oc login https://api.sandbox.openshift.com --token=-
+
+    - name: Trigger OpenShift Build
+      run: |
+        oc project gha-demo
+        oc start-build sandbox-app --from-dir=. --follow
