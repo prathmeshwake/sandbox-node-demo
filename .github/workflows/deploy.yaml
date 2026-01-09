@@ -29,9 +29,14 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # Step 5: Start App (for demo only)
+      # Step 5: Start App in background
       - name: Start App
         run: |
           node app.js &
           sleep 5
           echo "App started in GitHub Actions runner"
+
+      # Step 6: Test App endpoint
+      - name: Test App endpoint
+        run: |
+          curl http://localhost:8080
