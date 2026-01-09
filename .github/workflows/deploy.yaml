@@ -1,30 +1,37 @@
-name: Deploy to OpenShift Sandbox
+name: Node.js CI Hands-on
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Install OpenShift CLI
-      run: |
-        curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
-        tar -xzf oc.tar.gz
-        sudo mv oc /usr/local/bin/
-        oc version
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Login to OpenShift
-      run: |
-        echo "${{ secrets.OPENSHIFT_TOKEN }}" | oc login https://api.sandbox.openshift.com --token=-
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-    - name: Trigger OpenShift Build
-      run: |
-        oc project gha-demo
-        oc start-build sandbox-app --from-dir=. --follow
+      # Step 4: Run tests (optional)
+      - name: Run tests
+        run: npm test
+
+      # Step 5: Start App (for demo only)
+      - name: Start App
+        run: |
+          node app.js &
+          sleep 5
+          echo "App started in GitHub Actions runner"

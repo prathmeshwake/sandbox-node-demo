@@ -1,10 +1,14 @@
 {
-  "name": "sandbox-node-demo",
+  "name": "github-actions-node-demo",
   "version": "1.0.0",
+  "description": "A simple Node.js app for GitHub Actions hands-on",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "echo \"No tests yet\""
   },
+  "author": "Prathmesh Wake",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.18.2"
   }
